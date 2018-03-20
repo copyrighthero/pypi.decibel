@@ -4,6 +4,8 @@
 
 ## About the Decibel Library ##
 
+翻译正在进行中:-)
+
 The Decibel library is a Python DB-API database manager, or to be more precise, a thin wrapper. It exposes three methods besides the database instance: `reg` for registering a named statement,`run` for running a registered statement a single time or multiple times, and `__call__` method for executing a query.
 
 The wrapper can be helpful for it can memorize a statement with a short-hand key, user/developer can then execute the statement with the key instead of the full-blown statement string. This way, the statements can be stored and managed else where centrally, ie. `config.ini`. So any updates to the statements does not necessarily break the program's functionality.
