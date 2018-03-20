@@ -20,7 +20,7 @@ All the database methods are still available to use, so the user can do more.
 
 Simply import Decibel, pass in the database instance as the first parameter, and optionally a `dict` of `key - statement` pairs for the second parameter.
 
-New statement can be registered using `reg` method, it takes a string key and a string statement as its arguments, and persist them in the memory. Optionally, it takes arbitrarily keyword arguments (**kwargs), and treat them as `key - statement` pairs, and persist them in its memory.
+New statement can be registered using `reg` method, it takes a string key and a string statement as its arguments, and persist them in the memory. Optionally, it takes arbitrarily keyword arguments (`**kwargs`), and treat them as `key - statement` pairs, and persist them in its memory.
 
 To execute a saved statement, one can simply invoke the `run` method, with the first parameter being statement key, and the second being a tuple/list of arguments. Optionally, if the third argument is provided as `True`, it will expect the values to be tuple/list of tuple/list of arguments, and execute the saved query on each of the items.
 
