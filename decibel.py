@@ -1,7 +1,14 @@
 # Author: Hansheng Zhao <copyrighthero@gmail.com> (https://www.zhs.me)
 
 
-__all__ = ('Decibel', )
+# import directive
+__all__ = (
+  '__author__', '__license__', '__version__', 'Decibel'
+)
+# package metadata
+__author__ = 'Hansheng Zhao'
+__license__ = 'BSD-2-Clause + MIT'
+__version__ = '1.0.0'
 
 
 class Result(list):
