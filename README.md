@@ -4,8 +4,25 @@
 
 ## About the Decibel Library ##
 
+The Decibel library is a Python DB-API database manager, or to be more precise, a thin wrapper. It exposes three methods besides the database instance: `reg` for registering a named statement,`run` for running a registered statement a single time or multiple times, and `__call__` method for executing a query.
+
+The wrapper can be helpful for it can memorize a statement with a short-hand key, user/developer can then execute the statement with the key instead of the full-blown statement string. This way, the statements can be stored and managed else where centrally, ie. `config.ini`. So any updates to the statements does not necessarily break the program's functionality.
+
+Besides the statement management, the library also features a `Result` class used to hold query results. It is a subclass of `list` with two properties: `lastrowid` and `rowcount`.
+
+Since all queries executed with `Decibel` class are automatically committed to the database, user don't have to worry about data loss; however, all the query results are fetched at once using `fetchall` method on the database cursors, this library is not particularly suited for queries with very very long results.
+
+All the database methods are still available to use, so the user can do more.
 
 ## How to Use Decibel Library ##
+
+Simply import Decibel, pass in the database instance as the first parameter, and optionally a `dict` of `key - statement` pairs for the second parameter.
+
+New statement can be registered using `reg` method, it takes a string key and a string statement as its arguments, and persist them in the memory. Optionally, it takes arbitrarily keyword arguments (**kwargs), and treat them as `key - statement` pairs, and persist them in its memory.
+
+To execute a saved statement, one can simply invoke the `run` method, with the first parameter being statement key, and the second being a tuple/list of arguments. Optionally, if the third argument is provided as `True`, it will expect the values to be tuple/list of tuple/list of arguments, and execute the saved query on each of the items.
+
+A query can be executed without being saved simply by calling directly on the instance itself (`__call__` method), the second argument and the third behaves the same as `run` method. 
 
 ```python
 from mysql.connector import connect as mysql
@@ -62,7 +79,22 @@ The Decibel module provides two classes: `Result` and `Decibel`. The `Result` cl
 
 ### Result Class ###
 
+A sub class of `list`, with `lastrowid` and `rowcount` properties. it will perform a `fetchall` operation on the cursor passed in, so be aware that this might not be suitable for queries with very very long results.
+
+Signature: `Result(cursor)`
+
+`instance.lastrowid`: will give the user the last insertion row id, useful when auto incrementing.
+`instance.rowcount`: will give the user how many rows are affected by this query.
+
 ### Decibel Class ###
+
+The thin-wrapper manager class for DB-API compliant databases. Three methods were added on the database instances, `reg`, `run` and `__call__`. All the database methods are still available, so the users are not restricted by using this library.
+
+Signature: `Decibel(database, statments = None)`
+
+`instance.reg(stid = None, stmt = None, **kwargs)`: register a key-statement pair for later use.
+`instance.run(stid, vaulues = None, many = False)`: execute a saved statement.
+`isntance(statement, values = None, many = False)`: execute a statement.
 
 ## Licenses ##
 

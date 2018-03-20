@@ -1,8 +1,11 @@
-# Decibel Project #
+###############
+Decibel Project
+###############
 
-[README English](README.md) | [SQLite](https://sqlite.org/) | [PEP-249 DB-API 2.0](https://www.python.org/dev/peps/pep-0249/) | [Python Docs: SQLite3](https://docs.python.org/3/library/sqlite3.html) | [MySQL Connectors](https://www.mysql.com/products/connector/)
+`README中文文档 <https://github.com/copyrighthero/Decibel/blob/master/README.zh-CN.md>`_ | `SQLite <https://sqlite.org>`_ | `PEP-249 DB-API 2.0 <https://www.python.org/dev/peps/pep-0249/>`_ | `Python Docs: sqlite3 <https://docs.python.org/3/library/sqlite3.html>`_ | `MySQL Connectors <https://www.mysql.com/products/connector/>`_
 
-## About the Decibel Library ##
+About the Decibel Library
+=========================
 
 The Decibel library is a Python DB-API database manager, or to be more precise, a thin wrapper. It exposes three methods besides the database instance: `reg` for registering a named statement,`run` for running a registered statement a single time or multiple times, and `__call__` method for executing a query.
 
@@ -14,7 +17,8 @@ Since all queries executed with `Decibel` class are automatically committed to t
 
 All the database methods are still available to use, so the user can do more.
 
-## How to Use Decibel Library ##
+How to Use Decibel Library
+==========================
 
 Simply import Decibel, pass in the database instance as the first parameter, and optionally a `dict` of `key - statement` pairs for the second parameter.
 
@@ -22,62 +26,64 @@ New statement can be registered using `reg` method, it takes a string key and a 
 
 To execute a saved statement, one can simply invoke the `run` method, with the first parameter being statement key, and the second being a tuple/list of arguments. Optionally, if the third argument is provided as `True`, it will expect the values to be tuple/list of tuple/list of arguments, and execute the saved query on each of the items.
 
-A query can be executed without being saved simply by calling directly on the instance itself (`__call__` method), the second argument and the third behaves the same as `run` method. 
+A query can be executed without being saved simply by calling directly on the instance itself (`__call__` method), the second argument and the third behaves the same as `run` method.
 
-```python
-from mysql.connector import connect as mysql
-from sqlite3 import connect as sqlite
-from decibel import Decibel
+.. code-block:: python
 
-# create database instances as usual
-mysql_db = mysql(host = 'localhost', port = 3306, database = 'test')
-sqlite_db = sqlite(':memory:')
+  from mysql.connector import connect as mysql
+  from sqlite3 import connect as sqlite
+  from decibel import Decibel
 
-# initialize Decibel with database instance and statement repo
-mysql_dec = Decibel(mysql_db, {
-  'init' : 'create table test (id int(11) not null primary key auto_increment);'
-})
-# register statements for later use with key `insert` and `select_all`
-mysql_dec.reg('insert', 'insert into test values (%s);', select_all = 'select * from test;')
-# run a saved statement
-mysql_dec.run('init') # [], empty results
-# run the saved `insert` statement with values
-res = mysql_dec.run('insert', (100, )) # insert a value with single parameter
-res.lastrowid # 100, get the last row id
-res.rowcount # 1, get the affected row count
-# run the saved statement on multiple statements
-res = mysql_dec.run('insert', [(200, ), (300, )], True) # [[], []]execute many/insert many
-# since executed on many values, each item in the res list is a Result object
-res[0].lastrowid  # 200, the first insert command's lastrowid
-res[0].rowcount   # 1, the first insert command's rowcount
-res[1].lastrowid  # 300, the second insert command's lastrowid
-res[1].rowcount   # 1, the second insert command's rowcount
-res = mysql_dec.run('select_all') # [(100, ), (200, ), (300, )] the results
-res.lastrowid # 300, access the lastrowid
-res.rowcount # -1, access query row count
+  # create database instances as usual
+  mysql_db = mysql(host = 'localhost', port = 3306, database = 'test')
+  sqlite_db = sqlite(':memory:')
 
-# one can also execute a statement one by calling the object
-res = mysql_dec('select * from test;')
-res.lastrowid # 300, access the lastrowid
-res.rowcount # -1, access query row count
+  # initialize Decibel with database instance and statement repo
+  mysql_dec = Decibel(mysql_db, {
+    'init' : 'create table test (id int(11) not null primary key auto_increment);'
+  })
+  # register statements for later use with key `insert` and `select_all`
+  mysql_dec.reg('insert', 'insert into test values (%s);', select_all = 'select * from test;')
+  # run a saved statement
+  mysql_dec.run('init') # [], empty results
+  # run the saved `insert` statement with values
+  res = mysql_dec.run('insert', (100, )) # insert a value with single parameter
+  res.lastrowid # 100, get the last row id
+  res.rowcount # 1, get the affected row count
+  # run the saved statement on multiple statements
+  res = mysql_dec.run('insert', [(200, ), (300, )], True) # [[], []]execute many/insert many
+  # since executed on many values, each item in the res list is a Result object
+  res[0].lastrowid  # 200, the first insert command's lastrowid
+  res[0].rowcount   # 1, the first insert command's rowcount
+  res[1].lastrowid  # 300, the second insert command's lastrowid
+  res[1].rowcount   # 1, the second insert command's rowcount
+  res = mysql_dec.run('select_all') # [(100, ), (200, ), (300, )] the results
+  res.lastrowid # 300, access the lastrowid
+  res.rowcount # -1, access query row count
 
-# wrapper also worked on sqlite3 or any DB-API compliant instances
-sqlite_dec = Decibel(sqlite_db)
-sqlite_dec('create table test (id integer not null primary key autoincrement, co);')
-sqlite_dec.reg(insert = 'insert into test values (?, ?);')
-res = sqlite_dec.run('insert', (1, 'content'))
-res.lastrowid # 1
-res.rowcount # 1
-res = sqlite_dec.run('insert', (2, 'content'))
-res.lastrowid # 2
-res.rowcount # 1
-```
+  # one can also execute a statement one by calling the object
+  res = mysql_dec('select * from test;')
+  res.lastrowid # 300, access the lastrowid
+  res.rowcount # -1, access query row count
 
-## Decibel Class API References ##
+  # wrapper also worked on sqlite3 or any DB-API compliant instances
+  sqlite_dec = Decibel(sqlite_db)
+  sqlite_dec('create table test (id integer not null primary key autoincrement, co);')
+  sqlite_dec.reg(insert = 'insert into test values (?, ?);')
+  res = sqlite_dec.run('insert', (1, 'content'))
+  res.lastrowid # 1
+  res.rowcount # 1
+  res = sqlite_dec.run('insert', (2, 'content'))
+  res.lastrowid # 2
+  res.rowcount # 1
+
+Decibel Class API References
+============================
 
 The Decibel module provides two classes: `Result` and `Decibel`. The `Result` class is a subclass of Python `list` and is used to hold the execution result returned by database cursor; the `Decibel` class is the actual wrapper that manages statements, executions and commits.
 
-### Result Class ###
+Result Class
+------------
 
 A sub class of `list`, with `lastrowid` and `rowcount` properties. it will perform a `fetchall` operation on the cursor passed in, so be aware that this might not be suitable for queries with very very long results.
 
@@ -86,7 +92,8 @@ Signature: `Result(cursor)`
 `instance.lastrowid`: will give the user the last insertion row id, useful when auto incrementing.
 `instance.rowcount`: will give the user how many rows are affected by this query.
 
-### Decibel Class ###
+Decibel Class
+-------------
 
 The thin-wrapper manager class for DB-API compliant databases. Three methods were added on the database instances, `reg`, `run` and `__call__`. All the database methods are still available, so the users are not restricted by using this library.
 
@@ -96,9 +103,10 @@ Signature: `Decibel(database, statments = None)`
 `instance.run(stid, vaulues = None, many = False)`: execute a saved statement.
 `isntance(statement, values = None, many = False)`: execute a statement.
 
-## Licenses ##
+Licenses
+========
 
-This project is licensed under two permissive licenses, please chose one or both of the licenses to your like. Although not necessary, bug reports or feature improvements, attributes to the author(s), information on how this program is used are welcome and appreciated :-) Happy coding 
+This project is licensed under two permissive licenses, please chose one or both of the licenses to your like. Although not necessary, bug reports or feature improvements, attributes to the author(s), information on how this program is used are welcome and appreciated :-) Happy coding
 
 [BSD-2-Clause License]
 
