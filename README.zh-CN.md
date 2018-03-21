@@ -4,7 +4,7 @@
 
 ## About the Decibel Library ##
 
-翻译正在进行中:-)
+翻译正在进行中:-)作业优先:-)
 
 The Decibel library is a Python DB-API database manager, or to be more precise, a thin wrapper. It exposes three methods besides the database instance: `reg` for registering a named statement,`run` for running a registered statement a single time or multiple times, and `__call__` method for executing a query.
 
@@ -85,8 +85,8 @@ A sub class of `list`, with `lastrowid` and `rowcount` properties. it will perfo
 
 Signature: `Result(cursor)`
 
-`instance.lastrowid`: will give the user the last insertion row id, useful when auto incrementing.
-`instance.rowcount`: will give the user how many rows are affected by this query.
+- `instance.lastrowid`: will give the user the last insertion row id, useful when auto incrementing.
+- `instance.rowcount`: will give the user how many rows are affected by this query.
 
 ### Decibel Class ###
 
@@ -94,9 +94,9 @@ The thin-wrapper manager class for DB-API compliant databases. Three methods wer
 
 Signature: `Decibel(database, statments = None)`
 
-`instance.reg(stid = None, stmt = None, **kwargs)`: register a key-statement pair for later use.
-`instance.run(stid, vaulues = None, many = False)`: execute a saved statement.
-`isntance(statement, values = None, many = False)`: execute a statement.
+- `instance.reg(stid = None, stmt = None, **kwargs)`: register a key-statement pair for later use.
+- `instance.run(stid, vaulues = None, many = False)`: execute a saved statement.
+- `isntance(statement, values = None, many = False)`: execute a statement.
 
 ## Licenses ##
 
