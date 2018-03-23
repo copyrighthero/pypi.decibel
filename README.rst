@@ -9,7 +9,7 @@ About the Decibel Library
 
 The Decibel library is a Python DB-API database manager, or to be more precise, a thin wrapper. It exposes three methods besides the database instance: `reg` for registering a named statement,`run` for running a registered statement a single time or multiple times, and `__call__` method for executing a query.
 
-The wrapper can be helpful for it can memorize a statement with a short-hand key, user/developer can then execute the statement with the key instead of the full-blown statement string. This way, the statements can be stored and managed else where centrally, ie. `config.ini`. So any updates to the statements does not necessarily break the program's functionality.
+The wrapper can be helpful for it can memorize a statement with a short-hand key, user/developer can then execute the statement with the key instead of the full-blown statement string. This way, the statements can be stored and managed else where centrally, ie. `config.ini`. So any updates to the statements does not necessarily break the program's functionality. If you are interested, the `Utilize Library <https://www.github.com/copyrighthero/Utilize>`_ provides user with config/settings central management functionality, and it uses `Decibel` to provide user with database management.
 
 Besides the statement management, the library also features a `Result` class used to hold query results. It is a subclass of `list` with two properties: `lastrowid` and `rowcount`.
 
@@ -20,7 +20,7 @@ All the database methods are still available to use, so the user can do more.
 How to Use Decibel Library
 ==========================
 
-Simply import Decibel, pass in the database instance as the first parameter, and optionally a `dict` of `key - statement` pairs for the second parameter.
+After installing using `pip install Decibel`, simply import Decibel, pass in the database instance as the first parameter, and optionally a `dict` of `key - statement` pairs for the second parameter.
 
 New statement can be registered using `reg` method, it takes a string key and a string statement as its arguments, and persist them in the memory. Optionally, it takes arbitrarily keyword arguments (`**kwargs`), and treat them as `key - statement` pairs, and persist them in its memory.
 
@@ -89,8 +89,8 @@ A sub class of `list`, with `lastrowid` and `rowcount` properties. it will perfo
 
 Signature: `Result(cursor)`
 
-- `instance.lastrowid`: will give the user the last insertion row id, useful when auto incrementing.
-- `instance.rowcount`: will give the user how many rows are affected by this query.
+- `instance.lastrowid` property: will give the user the last insertion row id, useful when auto incrementing.
+- `instance.rowcount` property: will give the user how many rows are affected by this query.
 
 Decibel Class
 -------------

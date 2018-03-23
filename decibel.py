@@ -3,12 +3,13 @@
 
 # import directive
 __all__ = (
-  '__author__', '__license__', '__version__', 'Decibel'
+  '__author__', '__license__',
+  '__version__', 'Decibel'
 )
 # package metadata
 __author__ = 'Hansheng Zhao'
 __license__ = 'BSD-2-Clause + MIT'
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 
 
 class Result(list):
@@ -102,8 +103,8 @@ class Decibel(object):
     self._database.commit()
     return result
 
-  # aliases for call method
-  execute = __call__
+  # alias for call method
+  #execute = __call__
 
   def reg(self, stid = None, stmt = None, **kwargs):
     """
